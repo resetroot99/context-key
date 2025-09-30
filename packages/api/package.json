@@ -1,0 +1,34 @@
+{
+  "name": "@context-key/api",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Context Key API - Backend services for context management",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "eslint src/**/*.ts --fix",
+    "clean": "rm -rf dist",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@context-key/crypto": "workspace:*",
+    "@context-key/shared": "workspace:*",
+    "@supabase/supabase-js": "^2.38.0",
+    "fastify": "^4.24.0",
+    "fastify-cors": "^6.1.0",
+    "fastify-multipart": "^8.0.0",
+    "openai": "^4.20.0",
+    "pdf-parse": "^1.1.1",
+    "mammoth": "^1.6.0",
+    "zod": "^3.22.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/pdf-parse": "^1.1.4",
+    "eslint": "^8.45.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.0.0"
+  }
+}

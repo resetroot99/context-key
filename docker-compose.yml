@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  vault:
+    build:
+      context: .
+      dockerfile: packages/vault/Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./packages/vault:/app/packages/vault
+      - /app/packages/vault/node_modules
+      - /app/packages/vault/.next
+    command: pnpm --filter vault dev
+
+  temp-chat:
+    build:
+      context: .
+      dockerfile: packages/temp-chat/Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=development
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    volumes:
+      - ./packages/temp-chat:/app/packages/temp-chat
+      - /app/packages/temp-chat/node_modules
+      - /app/packages/temp-chat/.next
+    command: pnpm --filter temp-chat dev
+
+  api:
+    build:
+      context: .
+      dockerfile: packages/api/Dockerfile
+    ports:
+      - "3002:3002"
+    environment:
+      - NODE_ENV=development
+      - SUPABASE_URL=${SUPABASE_URL}
+      - SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    volumes:
+      - ./packages/api:/app/packages/api
+      - /app/packages/api/node_modules
+      - /app/packages/api/dist
+    command: pnpm --filter api dev
+
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_DB=contextkey
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
