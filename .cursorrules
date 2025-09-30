@@ -1,0 +1,75 @@
+## Cursor Rules: Context Key Project
+
+This file provides rules and guidelines for AI-assisted development on the Context Key project. Adhering to these rules ensures consistency, security, and high-quality code.
+
+### Core Philosophy
+
+1.  **Secure by Default, Simple by Design**: Prioritize security in all architectural decisions. User-facing features should be intuitive and hide underlying complexity.
+2.  **Build for One User First (You)**: The initial goal is to build a product that works perfectly for a single user, ensuring a polished and functional core experience.
+3.  **Iterate, Don't Perfect**: Focus on building a functional Minimum Viable Product (MVP) quickly. Perfection can come later.
+
+### Tech Stack
+
+*   **Framework**: Next.js (App Router)
+*   **Database & Auth**: Supabase (Postgres, pgvector, Auth, Storage)
+*   **Package Manager**: pnpm (using workspaces)
+*   **Language**: TypeScript
+*   **Styling**: Tailwind CSS
+*   **Crypto**: `tweetnacl` for signing, Web Crypto API (AES-GCM) for encryption.
+*   **Linting/Formatting**: ESLint and Prettier
+
+### Repository Structure
+
+The project is a monorepo with the following structure:
+
+```
+/packages
+  /app      # The main Next.js web application (App A and App B)
+  /crypto   # Core cryptographic functions and helpers
+```
+
+*   The `app` package contains the user interface and API routes.
+*   The `crypto` package contains all cryptographic operations. It should have no UI-related code and be a dependency of the `app` package.
+
+### Coding Style and Conventions
+
+*   **Formatting**: All code will be formatted with Prettier. Run `pnpm format` before committing.
+*   **Linting**: All code must pass ESLint checks. Run `pnpm lint` before committing.
+*   **Naming**: 
+    *   Files and directories: `kebab-case`
+    *   TypeScript variables and functions: `camelCase`
+    *   Components: `PascalCase`
+    *   CSS classes: `kebab-case` (Tailwind utility classes)
+*   **Comments**: Use JSDoc for all functions, especially for the `crypto` package.
+
+### Architectural Principles
+
+1.  **Zero Trust**: Never trust data from the client. All API routes must validate and sanitize input.
+2.  **Row-Level Security (RLS)**: All Supabase queries must be subject to RLS policies. A user should only ever be able to access their own data.
+3.  **In-Browser Crypto**: Sensitive operations like key decryption should happen in the browser whenever possible to avoid sending passwords to the server.
+4.  **Stateless API**: API routes should be stateless. All state should be managed on the client or in the database.
+
+### Commit Messages
+
+Use the Conventional Commits specification. Each commit message should be in the format:
+
+`<type>(<scope>): <description>`
+
+*   **Types**: `feat`, `fix`, `chore`, `docs`, `style`, `refactor`, `test`
+*   **Scope**: The package or area of the codebase affected (e.g., `app`, `crypto`, `docs`)
+
+Example: `feat(app): add user profile page`
+
+### Pull Requests and Issues
+
+*   **PRs**: All pull requests should have a clear description of the changes and link to any relevant issues.
+*   **Issues**: Use the provided issue templates for bug reports and feature requests.
+
+### AI Generation Rules
+
+*   When asked to generate a new component, create it in the `packages/app/components` directory.
+*   When asked to generate a new API route, create it in the `packages/app/app/api` directory.
+*   When asked to generate a new crypto function, create it in the `packages/crypto/src/` directory.
+*   Always include JSDoc comments for new functions.
+*   Ensure all new code adheres to the ESLint and Prettier configurations.
+
